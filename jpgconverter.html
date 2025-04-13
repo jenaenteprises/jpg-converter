@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image to JPG Converter | Convert Multiple Formats Online</title>
+    <meta name="description" content="Convert PNG, GIF, WEBP, HEIC, and other formats to JPG instantly. Free online image converter with high-quality results and fast processing.">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #4F46E5;
+            --primary-hover: #4338CA;
+            --background: #F9FAFB;
+            --text: #1F2937;
+            --card-bg: #FFFFFF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, #6366F1 100%);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .converter-card {
+            background: var(--card-bg);
+            border-radius: 1rem;
+            padding: 2.5rem;
+            margin: -3rem auto 2rem auto;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .upload-area {
+            border: 2px dashed #D1D5DB;
+            border-radius: 0.75rem;
+            padding: 3rem 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: #F3F4F6;
+            margin: 1.5rem 0;
+        }
+
+        .upload-area:hover {
+            border-color: var(--primary);
+            background: rgba(79, 70, 229, 0.05);
+        }
+
+        .upload-area.dragover {
+            border-color: var(--primary);
+            background: rgba(79, 70, 229, 0.1);
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .preview-container {
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        #preview {
+            max-width: 100%;
+            height: auto;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.875rem 2rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .button:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .ad-section {
+            margin: 3rem 0;
+            text-align: center;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 0.75rem;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        footer {
+            background: var(--text);
+            color: white;
+            padding: 3rem 0;
+            margin-top: 4rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+
+            .converter-card {
+                padding: 1.5rem;
+                margin: -2rem auto 1rem auto;
+            }
+
+            .button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        .loading-spinner {
+            display: none;
+            width: 2rem;
+            height: 2rem;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Image to JPG Converter</h1>
+            <p>Convert PNG, GIF, WEBP, HEIC, and More to High-Quality JPG</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Ad Section -->
+        <div class="ad-section">
+            <!-- Insert Ad Unit Here -->
+        </div>
+
+        <!-- Converter Card -->
+        <div class="converter-card">
+            <div class="upload-area" id="dropZone">
+                <i class="fas fa-cloud-upload-alt fa-3x" style="color: var(--primary); margin-bottom: 1rem;"></i>
+                <h3>Drag & Drop Files Here</h3>
+                <p>or click to select files</p>
+                <input type="file" id="fileInput" accept="image/*">
+            </div>
+
+            <div class="preview-container">
+                <img id="preview" alt="Image preview">
+            </div>
+
+            <button class="button" onclick="convertToJpg()">
+                <span class="loading-spinner" id="spinner"></span>
+                <span id="buttonText">Convert to JPG</span>
+            </button>
+        </div>
+
+        <!-- Features Grid -->
+        <div class="features-grid">
+            <div class="feature-card">
+                <i class="fas fa-clock fa-2x" style="color: var(--primary); margin-bottom: 1rem;"></i>
+                <h3>Fast Conversion</h3>
+                <p>Instant conversion powered by browser processing</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-shield-alt fa-2x" style="color: var(--primary); margin-bottom: 1rem;"></i>
+                <h3>Secure Processing</h3>
+                <p>Files never leave your device - 100% client-side conversion</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-mobile-alt fa-2x" style="color: var(--primary); margin-bottom: 1rem;"></i>
+                <h3>Mobile Friendly</h3>
+                <p>Works perfectly on all devices and screen sizes</p>
+            </div>
+        </div>
+
+        <!-- Ad Section -->
+        <div class="ad-section">
+            <!-- Insert Ad Unit Here -->
+        </div>
+    </div>
+
+    <footer>
+        <div class="container" style="text-align: center;">
+            <p>&copy; 2024 Image to JPG Converter. All rights reserved.</p>
+            <p style="margin-top: 1rem;">Supports: PNG, GIF, WEBP, HEIC, SVG, PSD, RAW</p>
+        </div>
+    </footer>
+
+    <script>
+        // Enhanced drag and drop functionality
+        const dropZone = document.getElementById('dropZone');
+        
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('dragover');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            handleFile(file);
+        });
+
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            handleFile(file);
+        });
+
+        function handleFile(file) {
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = document.getElementById('preview');
+                img.src = e.target.result;
+                img.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        async function convertToJpg() {
+            const fileInput = document.getElementById('fileInput');
+            if (!fileInput.files[0]) {
+                showToast('Please select an image first!', 'error');
+                return;
+            }
+
+            const button = document.querySelector('.button');
+            button.disabled = true;
+            document.getElementById('spinner').style.display = 'inline-block';
+            document.getElementById('buttonText').textContent = 'Converting...';
+
+            try {
+                const file = fileInput.files[0];
+                const img = await createImageBitmap(file);
+                
+                const canvas = document.createElement('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+                
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0);
+
+                canvas.toBlob(function(blob) {
+                    const downloadLink = document.createElement('a');
+                    downloadLink.download = `${file.name.replace(/\.[^/.]+$/, "")}_converted.jpg`;
+                    downloadLink.href = URL.createObjectURL(blob);
+                    downloadLink.click();
+                    showToast('Conversion successful!', 'success');
+                }, 'image/jpeg', 0.9);
+            } catch (error) {
+                showToast('Error converting file. Please try again.', 'error');
+            } finally {
+                button.disabled = false;
+                document.getElementById('spinner').style.display = 'none';
+                document.getElementById('buttonText').textContent = 'Convert to JPG';
+            }
+        }
+
+        function showToast(message, type) {
+            const toast = document.createElement('div');
+            toast.textContent = message;
+            toast.style.position = 'fixed';
+            toast.style.bottom = '20px';
+            toast.style.left = '50%';
+            toast.style.transform = 'translateX(-50%)';
+            toast.style.padding = '1rem 2rem';
+            toast.style.background = type === 'error' ? '#EF4444' : '#10B981';
+            toast.style.color = 'white';
+            toast.style.borderRadius = '0.5rem';
+            toast.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)';
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
